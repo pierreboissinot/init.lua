@@ -9,6 +9,8 @@
 vim.g.mapleader = ";"
 vim.g.maplocalleader = ";"
 
+-- vim.opt.guifont = "JetBrainsMono Nerd Font:h14"
+
 vim.opt.number = true         -- Show absolute line numbers
 -- vim.opt.relativenumber = true -- Show relative line numbers (optional)
 
@@ -234,7 +236,8 @@ local Plug = vim.fn['plug#']
 
 vim.call('plug#begin')
 
-Plug 'tamton-aquib/zone.nvim'
+
+-- Plug 'tamton-aquib/zone.nvim' -- eats CPU usage
 
 Plug 'mason-org/mason.nvim'
 
@@ -287,11 +290,13 @@ require("mason").setup({
  -- ensure install phpactor
 })
 
+--[[
 require('zone').setup {
-  -- style = "dvd",
-  after = 15,          -- Idle timeout
-  -- exclude_filetypes = { "TelescopePrompt", "NvimTree", "neo-tree", "dashboard", "lazy" },
+  style = "treadmill",
+  after = 300,          -- Idle timeout
+  exclude_filetypes = { "TelescopePrompt", "NvimTree", "neo-tree", "dashboard", "lazy" },
 }
+]]--
 
 require('dashboard').setup({
   theme = 'hyper',  -- or 'doom'
