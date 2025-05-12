@@ -9,6 +9,7 @@ Key points:
 - some Symfony specific features (WIP)
 
 Prerequisite:
+
     - git
     - bat
     - ripgrep
@@ -16,5 +17,6 @@ Prerequisite:
     - install Neovim with [prebuilt archives](https://github.com/neovim/neovim/blob/master/INSTALL.md#pre-built-archives-2)
 
 TODO:
+
     - extract Symfony plugin to its own repo, when it's ready
 
