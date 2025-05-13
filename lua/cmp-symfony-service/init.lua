@@ -9,11 +9,6 @@ source.new = function()
   return setmetatable({}, { __index = source })
 end
 
-source.is_available = function()
-  local ft = vim.bo.filetype
-  return ft == "php" or ft == "twig"
-end
-
 source.get_trigger_characters = function()
   return { '@' }
 end
@@ -22,17 +17,11 @@ source.get_keyword_pattern = function()
   return [[@\k*]]
 end
 
-source.complete = function(self, params, callback)
-  local ft = vim.bo[params.context.bufnr].filetype
-  if ft ~= "php" and ft ~= "twig" then
-    callback({})
-    return
-  end
-  log("complete called")
+source.complete = function(_, params, callback)
   local input = params.context.cursor_before_line
   local query = input:match("@(%w*)$") or ""
-  local items = require('cmp-symfony-service.services').get_services(query)
-  log("Fetched " .. tostring(#items) .. " services")
+  local items = require('cmp-symfony-service.services').find_services(query)
+  -- log("Fetched " .. tostring(#items) .. " services")
   callback(items)
 end
 

@@ -471,7 +471,7 @@ require("lualine").setup({
 local cmp = require('cmp')
 
 -- Register the source before cmp.setup
-cmp.register_source("symfony_services", require("cmp-symfony-service").new())
+cmp.register_source("symfony_service", require("cmp-symfony-service").new())
 
 require('cmp').setup({
   mapping = cmp.mapping.preset.insert({
@@ -496,14 +496,13 @@ require('cmp').setup({
     { name = 'buffer' },
     { name = 'nvim_lsp' },
     {
-      name = 'symfony_services',
+      name = 'symfony_service',
       keyword_pattern = [[@\k*]],
       trigger_characters = { '@' },
       option = {
-        docker_command = { "docker", "compose", "exec", "php" },
         cwd = nil,
         cwd_files = { "composer.json", "bin/console" },
-        filetypes = { "php", "twig" }
+        filetypes = { "php", "twig", "yaml", "yml" }
       }
     },
   }),
