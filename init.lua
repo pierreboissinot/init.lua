@@ -9,11 +9,6 @@
 vim.g.mapleader = ";"
 vim.g.maplocalleader = ";"
 
--- vim.opt.guifont = "JetBrainsMono Nerd Font:h14"
-
-vim.opt.number = true         -- Show absolute line numbers
--- vim.opt.relativenumber = true -- Show relative line numbers (optional)
-
 -- https://phpactor.readthedocs.io/en/master/lsp/vim.html#two-dollars-on-variables
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "php",
@@ -94,7 +89,6 @@ vim.lsp.config['phpactor'] = {
       })
     end,
   })
-
 
   -- vim.lsp.enable('dockerfile-language-server')
 
@@ -236,8 +230,7 @@ local Plug = vim.fn['plug#']
 
 vim.call('plug#begin')
 
-
--- Plug 'tamton-aquib/zone.nvim' -- eats CPU usage
+Plug 'tamton-aquib/zone.nvim'
 
 Plug 'mason-org/mason.nvim'
 
@@ -267,6 +260,8 @@ Plug 'nvimdev/dashboard-nvim'
 
 Plug 'nvim-telescope/telescope-frecency.nvim'
 
+Plug '/home/pierreboissinot/workspace/github/telescope-symfony'
+
 Plug 'tpope/vim-fugitive'
 
 Plug 'hrsh7th/cmp-nvim-lsp'
@@ -290,13 +285,11 @@ require("mason").setup({
  -- ensure install phpactor
 })
 
---[[
 require('zone').setup {
-  style = "treadmill",
-  after = 300,          -- Idle timeout
-  exclude_filetypes = { "TelescopePrompt", "NvimTree", "neo-tree", "dashboard", "lazy" },
+  -- style = "dvd",
+  after = 15,          -- Idle timeout
+  -- exclude_filetypes = { "TelescopePrompt", "NvimTree", "neo-tree", "dashboard", "lazy" },
 }
-]]--
 
 require('dashboard').setup({
   theme = 'hyper',  -- or 'doom'
@@ -309,10 +302,19 @@ require('dashboard').setup({
   }
 })
 
+require("trouble").setup {}
+
+vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
+vim.keymap.set("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
+vim.keymap.set("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
+vim.keymap.set("n", "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", { desc = "LSP Definitions / references / ... (Trouble)" })
+vim.keymap.set("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
+vim.keymap.set("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
+
+
 
 -- Telescope
 local builtin = require('telescope.builtin')
-vim.keymap.set('n', '<leader>fr', builtin.resume, {})
 vim.keymap.set('n', '<leader>ff', builtin.find_files, {})
 vim.keymap.set('n', '<leader>fg', builtin.live_grep, {})
 vim.keymap.set('n', '<leader>fb', builtin.buffers, {})
@@ -411,7 +413,6 @@ local add_to_trouble = require("trouble.sources.telescope").add
 
 local telescope = require("telescope")
 
---@see https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes
 telescope.setup({
   defaults = {
     mappings = {
@@ -471,7 +472,7 @@ require("lualine").setup({
 local cmp = require('cmp')
 
 -- Register the source before cmp.setup
-cmp.register_source("symfony_service", require("cmp-symfony-service").new())
+-- cmp.register_source("symfony_services", require("cmp-symfony-service").new())
 
 require('cmp').setup({
   mapping = cmp.mapping.preset.insert({
@@ -496,22 +497,16 @@ require('cmp').setup({
     { name = 'buffer' },
     { name = 'nvim_lsp' },
     {
-      name = 'symfony_service',
+      name = 'symfony_services',
       keyword_pattern = [[@\k*]],
       trigger_characters = { '@' },
       option = {
+        docker_command = { "docker", "compose", "exec", "php" },
         cwd = nil,
         cwd_files = { "composer.json", "bin/console" },
-        filetypes = { "php", "twig", "yaml", "yml" }
+        filetypes = { "php", "twig" }
       }
     },
   }),
 })
-
-vim.keymap.set("n", "<leader>xx", "<cmd>Trouble diagnostics toggle<cr>", { desc = "Diagnostics (Trouble)" })
-vim.keymap.set("n", "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", { desc = "Buffer Diagnostics (Trouble)" })
-vim.keymap.set("n", "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", { desc = "Symbols (Trouble)" })
-vim.keymap.set("n", "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", { desc = "LSP Definitions / references / ... (Trouble)" })
-vim.keymap.set("n", "<leader>xL", "<cmd>Trouble loclist toggle<cr>", { desc = "Location List (Trouble)" })
-vim.keymap.set("n", "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", { desc = "Quickfix List (Trouble)" })
 
